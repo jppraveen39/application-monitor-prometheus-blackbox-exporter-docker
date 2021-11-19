@@ -1,0 +1,275 @@
+global:
+  scrape_interval: 30s
+
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - 192.168.1.119:9094
+      - 192.168.1.119:9104
+
+rule_files:
+   - "alert.rules.yml"
+
+scrape_configs:
+  - job_name: services
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['192.168.1.119:9000']
+
+
+  - job_name: 'INTERFACE'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - http://192.168.1.193:8080
+        - http://192.168.1.195:8080
+        - http://192.168.1.196:8080
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 192.168.1.119:9115
+
+  - job_name: 'DNR'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - http://192.168.1.193:8480
+        - http://192.168.1.195:8480
+        - http://192.168.1.196:8480
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 192.168.1.119:9115
+
+  - job_name: 'R3R'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - http://192.168.1.193:8580
+        - http://192.168.1.195:8580
+        - http://192.168.1.196:8580
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 192.168.1.119:9115
+
+
+  - job_name: 'BULK_MT'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - http://192.168.1.173:1025/metrics
+        - http://192.168.1.173:4025/metrics
+        - http://192.168.1.173:6025/metrics
+        - http://192.168.1.173:8025/metrics
+        - http://192.168.1.173:12025/metrics
+        - http://192.168.1.173:13025/metrics
+        - http://192.168.1.173:14025/metrics
+        - http://192.168.1.174:2025/metrics
+        - http://192.168.1.174:6025/metrics
+        - http://192.168.1.174:4025/metrics
+        - http://192.168.1.174:16025/metrics
+        - http://192.168.1.174:3025/metrics
+        - http://192.168.1.174:8025/metrics
+        - http://192.168.1.174:11025/metrics
+        - http://192.168.1.174:10025/metrics
+        - http://192.168.1.174:14025/metrics
+        - http://192.168.1.174:15025/metrics
+        - http://192.168.1.175:1025/metrics
+        - http://192.168.1.175:5025/metrics
+        - http://192.168.1.175:7025/metrics
+        - http://192.168.1.175:9025/metrics
+        - http://192.168.1.175:12025/metrics
+        - http://192.168.1.175:15025/metrics
+        - http://192.168.1.175:16025/metrics
+        # - http://192.168.1.175:14025/metrics
+        - http://192.168.1.176:2025/metrics
+        - http://192.168.1.176:7025/metrics
+        - http://192.168.1.176:3025/metrics
+        - http://192.168.1.176:5025/metrics
+        - http://192.168.1.176:11025/metrics
+        - http://192.168.1.176:9025/metrics
+        - http://192.168.1.176:13025/metrics
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 192.168.1.119:9115
+
+  - job_name: 'BULK_DN'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - http://192.168.1.177:2050/metrics
+        # - http://192.168.1.177:4050/metrics
+        - http://192.168.1.177:6050/metrics
+        - http://192.168.1.177:5050/metrics
+        - http://192.168.1.177:7050/metrics
+        - http://192.168.1.177:8050/metrics
+        - http://192.168.1.178:2050/metrics
+        - http://192.168.1.178:6050/metrics
+        - http://192.168.1.178:5050/metrics
+        - http://192.168.1.178:7050/metrics
+        - http://192.168.1.178:8050/metrics
+        - http://192.168.1.178:9050/metrics
+
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 192.168.1.119:9115
+
+  - job_name: 'KANNEL'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - http://192.168.1.183:1001/status
+        - http://192.168.1.183:2001/status
+        - http://192.168.1.183:3001/status
+        - http://192.168.1.183:4001/status
+        - http://192.168.1.183:5001/status
+        - http://192.168.1.183:6001/status
+        # - http://192.168.1.183:9001/status
+        - http://192.168.1.184:1001/status
+        - http://192.168.1.184:2001/status
+        - http://192.168.1.184:3001/status
+        - http://192.168.1.184:4001/status
+        - http://192.168.1.184:5001/status
+        - http://192.168.1.184:6001/status
+        - http://192.168.1.184:9001/status
+        - http://192.168.1.183:10001/status
+        - http://192.168.1.183:11001/status
+        - http://192.168.1.183:12001/status
+        - http://192.168.1.183:13001/status
+        - http://192.168.1.184:10001/status
+        - http://192.168.1.184:11001/status
+        - http://192.168.1.184:12001/status
+        - http://192.168.1.184:13001/status
+    
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 192.168.1.119:9115
+
+  - job_name: 'OTP-MT'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        # - http://192.168.1.179:1025/metrics
+        # - http://192.168.1.179:6025/metrics
+        # - http://192.168.1.179:14025/metrics
+        # - http://192.168.1.179:7025/metrics
+        # - http://192.168.1.179:4025/metrics
+        # - http://192.168.1.179:16025/metrics
+        # - http://192.168.1.179:5025/metrics
+        # - http://192.168.1.179:8025/metrics
+        # - http://192.168.1.179:11025/metrics
+        # - http://192.168.1.179:9025/metrics
+        # - http://192.168.1.179:13025/metrics
+        # - http://192.168.1.179:15025/metrics
+        # - http://192.168.1.179:2050/metrics
+        # - http://192.168.1.179:6050/metrics
+        # - http://192.168.1.179:5050/metrics
+        # - http://192.168.1.179:7050/metrics
+        # - http://192.168.1.180:1025/metrics
+        # - http://192.168.1.180:14025/metrics
+        # - http://192.168.1.180:6025/metrics
+        # - http://192.168.1.180:7025/metrics
+        # - http://192.168.1.180:4025/metrics
+        # - http://192.168.1.180:16025/metrics
+        # - http://192.168.1.180:5025/metrics
+        # - http://192.168.1.180:8025/metrics
+        # - http://192.168.1.180:11025/metrics
+        # - http://192.168.1.180:9025/metrics
+        # - http://192.168.1.180:13025/metrics
+        # - http://192.168.1.180:15025/metrics
+        # - http://192.168.1.180:2050/metrics
+        # - http://192.168.1.180:6050/metrics
+        # - http://192.168.1.180:5050/metrics
+        # - http://192.168.1.180:7050/metrics
+
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 192.168.1.119:9115
+
+  - job_name: 'UI'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - http://192.168.1.216:8180
+        - http://192.168.1.216:8280
+        - http://192.168.1.216:8380
+        - http://192.168.1.224:8180
+        - http://192.168.1.224:8280
+        - http://192.168.1.224:8380
+        - http://192.168.1.149:3000/cm/refreshinterval
+        - http://192.168.1.223:3000/cm/refreshinterval
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 192.168.1.119:9115
+
+  - job_name: 'Website_monitoring'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - https://api.itextos.com/
+        - http://api.itextos.com/
+        - https://cm.itextos.com/cm/#/login
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 192.168.1.119:9115
+  
+  - job_name: 'DB'
+    metrics_path: /metrics
+   
+    static_configs:
+      - targets:
+        - 192.168.1.119:9104
+
