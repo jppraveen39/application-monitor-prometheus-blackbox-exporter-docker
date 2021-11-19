@@ -9,11 +9,11 @@ route:
 receivers:
 - name: email-me
   email_configs:
-  - to: 'alerts-prod@winnovature.com'
-    from: alertprometheus01@gmail.com
+  - to: 'xxx@gmail.com'
+    from: yyy@gmail.com
     smarthost: smtp.gmail.com:587
-    auth_username: alertprometheus01@gmail.com
-    auth_identity: alertprometheus01@gmail.com
-    auth_password: aajtzfoyryapjgjo
+    auth_username: yyy@gmail.com
+    auth_identity: yyy@gmail.com
+    auth_password: zzzzzzz
     send_resolved: true
 
